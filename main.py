@@ -1,11 +1,12 @@
 from selenium import webdriver
 # from webdriver_manager.firefox import GeckoDriverManager
 from locators import locator
+from searchData import product
 from csv import reader
 from selenium.webdriver.support.ui import Select
 import unittest
 import random
-
+import time
 
 class Automation_Test(unittest.TestCase):
     def setUp(self):
@@ -14,7 +15,7 @@ class Automation_Test(unittest.TestCase):
         self.driver.implicitly_wait(10)
         self.driver.get("http://automationpractice.com/")
         self.driver.maximize_window()
-        with open('data.csv') as csvfile:
+        with open('accountData.csv') as csvfile:
             self.csvreader = list(reader(csvfile, delimiter=','))
 
     def tearDown(self):
@@ -54,6 +55,15 @@ class Automation_Test(unittest.TestCase):
             self.driver.find_element(*locator["register_button"]).click()
             assert self.driver.title == "My account - My Store"
             self.driver.find_element(*locator["logout_button"]).click()
+
+
+    def test_search_product(self):
+        for item in product:
+            self.driver.find_element(*locator["search"]).clear()
+            self.driver.find_element(*locator["search"]).send_keys(item)
+            self.driver.find_element(*locator["search_botton"]).click()
+            assert self.driver.title == "Search - My Store"
+            time.sleep(3)
 
 
 if __name__ == '__main__':

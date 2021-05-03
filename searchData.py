@@ -1,0 +1,5 @@
+product = [
+    "dress",
+    "T-shirts",
+    ""
+]
