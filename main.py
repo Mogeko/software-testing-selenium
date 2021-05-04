@@ -25,8 +25,8 @@ class Automation_Test(unittest.TestCase):
 
     def test_create_account(self):
         def create_account(row: list):
-            account_email     = str(random.randint(0, 1000000))+row[0]
-            account_passsword = row[3]
+            account_email   = str(random.randint(0, 1000000))+row[0]
+            account_passswd = row[3]
             assert self.driver.find_element(
                 *locator["sign_in_link"]).is_displayed()
             self.driver.find_element(*locator["sign_in_link"]).click()
@@ -36,7 +36,7 @@ class Automation_Test(unittest.TestCase):
             self.driver.find_element(*locator["gender_radiobutton"]).click()
             self.driver.find_element(*locator["firstname"]).send_keys(row[1])
             self.driver.find_element(*locator["lastname"]).send_keys(row[2])
-            self.driver.find_element(*locator["password"]).send_keys(account_passsword)
+            self.driver.find_element(*locator["password"]).send_keys(account_passswd)
             select = Select(self.driver.find_element(
                 *locator["days_dropdown"]))
             select.select_by_value(row[4])
@@ -58,7 +58,7 @@ class Automation_Test(unittest.TestCase):
             self.driver.find_element(*locator["register_button"]).click()
             assert self.driver.title == "My account - My Store"
             self.driver.find_element(*locator["logout_button"]).click()
-            return [account_email, account_passsword]
+            return [account_email, account_passswd]
 
         with open("registrationData.csv", "r") as csvfile_1:
             with open("loginData.csv", "w", newline="") as csvfile_2:
@@ -86,6 +86,19 @@ class Automation_Test(unittest.TestCase):
                 self.driver.find_element(*locator["login_button"]).click()
                 assert self.driver.title == "My account - My Store"
                 self.driver.find_element(*locator["logout_button"]).click()
+
+    def test_login_with_incorrect_credentials(self):
+        for _ in range(3):
+            random_email  = str(random.randint(0, 1000000))+"@email.com"
+            random_passwd = str(random.randint(100000, 1000000000))
+            assert self.driver.find_element(
+                *locator["sign_in_link"]).is_displayed()
+            self.driver.find_element(*locator["sign_in_link"]).click()
+            assert self.driver.title == "Login - My Store"
+            self.driver.find_element(*locator["email"]).send_keys(random_email)
+            self.driver.find_element(*locator["password"]).send_keys(random_passwd)
+            self.driver.find_element(*locator["login_button"]).click()
+            self.driver.find_element(*locator["login_error_message"]).text == "Authentication failed."
 
 
 if __name__ == '__main__':

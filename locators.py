@@ -25,5 +25,5 @@ locator = {
     "search": (By.ID, "search_query_top"),
     "search_botton": (By.CLASS_NAME, "button-search"),
     "add2cart_button": (By.CLASS_NAME, "ajax_add_to_cart_button"),
-    "menu": (By.CLASS_NAME, "sf-menu")
+    "login_error_message": (By.XPATH, "/html/body/div/div[2]/div/div[3]/div/div[1]/ol/li")
 }
