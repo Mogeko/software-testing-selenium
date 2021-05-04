@@ -2,38 +2,41 @@ from selenium import webdriver
 # from webdriver_manager.firefox import GeckoDriverManager
 from locators import locator
 from searchData import product
-from csv import reader
+from csv import reader, writer
 from selenium.webdriver.support.ui import Select
 import unittest
 import random
 import time
+
+
+WEBSITE = "http://automationpractice.com/"
+
 
 class Automation_Test(unittest.TestCase):
     def setUp(self):
         # self.driver = webdriver.Firefox(GeckoDriverManager().install())
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(10)
-        self.driver.get("http://automationpractice.com/")
+        self.driver.get(WEBSITE)
         self.driver.maximize_window()
-        with open('accountData.csv') as csvfile:
-            self.csvreader = list(reader(csvfile, delimiter=','))
 
     def tearDown(self):
         self.driver.quit()
 
     def test_create_account(self):
-        for row in self.csvreader:
+        def create_account(row: list):
+            account_email     = str(random.randint(0, 1000000))+row[0]
+            account_passsword = row[3]
             assert self.driver.find_element(
                 *locator["sign_in_link"]).is_displayed()
             self.driver.find_element(*locator["sign_in_link"]).click()
-            self.driver.find_element(
-                *locator["email_field"]).send_keys(str(random.randint(0, 1000000))+row[0])
+            self.driver.find_element(*locator["email_field"]).send_keys(account_email)
             self.driver.find_element(*locator["create_account_button"]).click()
             assert self.driver.title == "Login - My Store"
             self.driver.find_element(*locator["gender_radiobutton"]).click()
             self.driver.find_element(*locator["firstname"]).send_keys(row[1])
             self.driver.find_element(*locator["lastname"]).send_keys(row[2])
-            self.driver.find_element(*locator["password"]).send_keys(row[3])
+            self.driver.find_element(*locator["password"]).send_keys(account_passsword)
             select = Select(self.driver.find_element(
                 *locator["days_dropdown"]))
             select.select_by_value(row[4])
@@ -55,7 +58,13 @@ class Automation_Test(unittest.TestCase):
             self.driver.find_element(*locator["register_button"]).click()
             assert self.driver.title == "My account - My Store"
             self.driver.find_element(*locator["logout_button"]).click()
+            return [account_email, account_passsword]
 
+        with open("registrationData.csv", "r") as csvfile_1:
+            with open("loginData.csv", "w", newline="") as csvfile_2:
+                writer(csvfile_2).writerows(
+                    map(create_account, reader(csvfile_1, delimiter=","))
+                )
 
     def test_search_product(self):
         for item in product:
@@ -64,6 +73,19 @@ class Automation_Test(unittest.TestCase):
             self.driver.find_element(*locator["search_botton"]).click()
             assert self.driver.title == "Search - My Store"
             time.sleep(3)
+
+    def test_login_with_correct_credentials(self):
+        with open("loginData.csv", "r") as csvfile:
+            for row in reader(csvfile, delimiter=","):
+                assert self.driver.find_element(
+                    *locator["sign_in_link"]).is_displayed()
+                self.driver.find_element(*locator["sign_in_link"]).click()
+                assert self.driver.title == "Login - My Store"
+                self.driver.find_element(*locator["email"]).send_keys(row[0])
+                self.driver.find_element(*locator["password"]).send_keys(row[1])
+                self.driver.find_element(*locator["login_button"]).click()
+                assert self.driver.title == "My account - My Store"
+                self.driver.find_element(*locator["logout_button"]).click()
 
 
 if __name__ == '__main__':
