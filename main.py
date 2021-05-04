@@ -1,5 +1,5 @@
 from selenium import webdriver
-# from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
 from locators import locator
 from searchData import product
 from csv import reader
@@ -10,8 +10,7 @@ import time
 
 class Automation_Test(unittest.TestCase):
     def setUp(self):
-        # self.driver = webdriver.Firefox(GeckoDriverManager().install())
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.Firefox(GeckoDriverManager().install())
         self.driver.implicitly_wait(10)
         self.driver.get("http://automationpractice.com/")
         self.driver.maximize_window()
