@@ -1,0 +1,31 @@
+---
+name: Run Selenium Test
+
+on: [push, pull_request]
+
+jobs:
+  selenium:
+    name: Run Selenium Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: SetUp Python
+        uses: actions/setup-python@v1
+        with:
+           python-version: 3.8
+
+      - name: SetUp Firefox
+        uses: browser-actions/setup-firefox@latest
+
+      - name: SetUp GeckoDriver
+        uses: browser-actions/setup-geckodriver@latest
+
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+
+      - name: Run!!
+        run: python main.py
+...
