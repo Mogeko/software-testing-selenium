@@ -1,0 +1,32 @@
+---
+name: Run Selenium Test
+
+on: [push, pull_request]
+
+jobs:
+  selenium:
+    name: Run Selenium Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: SetUp Python
+        uses: actions/setup-python@v1
+        with:
+           python-version: 3.8
+      
+      - name: SetUp GeckoDriver
+        run: |
+          curl -LO https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz
+          tar -xf geckodriver-v0.29.1-linux64.tar.gz
+      
+      - name: Install Requirements
+        run: pip install -r requirements.txt
+
+      - name: Run!!
+        run: |
+          chmod +x geckodriver
+          python main.py
+...

@@ -19,5 +19,11 @@ locator = {
     "postcode": (By.ID, "postcode"),
     "mobile": (By.ID, "phone_mobile"),
     "register_button": (By.ID, "submitAccount"),
-    "logout_button": (By.XPATH, "//*[@id='header']/div[2]/div/div/nav/div[2]/a")
+    "logout_button": (By.XPATH, "//*[@id='header']/div[2]/div/div/nav/div[2]/a"),
+    "email": (By.ID, "email"),
+    "login_button": (By.ID, "SubmitLogin"),
+    "search": (By.ID, "search_query_top"),
+    "search_botton": (By.CLASS_NAME, "button-search"),
+    "add2cart_button": (By.CLASS_NAME, "ajax_add_to_cart_button"),
+    "menu": (By.CLASS_NAME, "sf-menu")
 }
