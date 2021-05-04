@@ -84,7 +84,6 @@ class Automation_Test(unittest.TestCase):
                 self.driver.find_element(*locator["email"]).send_keys(row[0])
                 self.driver.find_element(*locator["password"]).send_keys(row[1])
                 self.driver.find_element(*locator["login_button"]).click()
-                assert self.driver.title == "My account - My Store"
                 self.driver.find_element(*locator["logout_button"]).click()
 
     def test_login_with_incorrect_credentials(self):
