@@ -1,5 +1,4 @@
 from selenium import webdriver
-# from webdriver_manager.firefox import GeckoDriverManager
 from locators import locator
 from searchData import product
 from csv import reader, writer
@@ -14,8 +13,9 @@ WEBSITE = "http://automationpractice.com/"
 
 class Automation_Test(unittest.TestCase):
     def setUp(self):
-        # self.driver = webdriver.Firefox(GeckoDriverManager().install())
-        self.driver = webdriver.Firefox()
+        firefox_options = webdriver.FirefoxOptions()
+        firefox_options.set_headless()
+        self.driver = webdriver.Firefox(firefox_options=firefox_options)
         self.driver.implicitly_wait(10)
         self.driver.get(WEBSITE)
         self.driver.maximize_window()
