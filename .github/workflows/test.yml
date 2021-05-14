@@ -6,7 +6,7 @@ on: [push, pull_request]
 jobs:
   selenium:
     name: Run Selenium Test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: Checkout
@@ -17,9 +17,6 @@ jobs:
         with:
            python-version: 3.8
 
-      - name: SetUp Firefox
-        uses: browser-actions/setup-firefox@latest
-
       - name: SetUp GeckoDriver
         uses: browser-actions/setup-geckodriver@latest
 
@@ -28,4 +25,10 @@ jobs:
 
       - name: Run!!
         run: python main.py
+
+      - name: Update log
+        uses: actions/upload-artifact@v2
+        with:
+          name: webdriver log
+          path: geckodriver.log
 ...
