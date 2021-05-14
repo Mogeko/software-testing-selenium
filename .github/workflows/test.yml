@@ -29,6 +29,6 @@ jobs:
       - name: Update log
         uses: actions/upload-artifact@v2
         with:
-          name: log
-          path: *.log
+          name: webdriver log
+          path: geckodriver.log
 ...
